@@ -1,0 +1,4 @@
+<%= form_with url: upload_emails_path,  local: true, multipart: true do | f | %> 
+  <%= f.file_field :file %>
+  <%= f.submit "Enviar" %>  
+<% end %> 

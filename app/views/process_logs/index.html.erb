@@ -1,0 +1,7 @@
+<%= turbo_stream_from "updatelogs" %>
+
+<div data-controller="process-log"  >
+    <% @logs.each do | log | %>
+        <%= render 'shared/logs', log: log %>
+    <% end %>
+</div>

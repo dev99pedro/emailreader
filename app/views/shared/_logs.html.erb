@@ -1,0 +1,14 @@
+ <div  style="border: 1px solid black" id="logs_<%=log.id%>">
+    <p><%= log.status %></p>
+    <p><%= log.filename %></p>
+
+    <% if log.extracteddata.present? %>
+      <% log.extracteddata.each do |key, value| %>
+        <p><strong><%= key %>:</strong> <%= value %></p>
+      <% end %>
+    <% end %>
+
+    <% if log.error.present? %>
+      <p><%= log.error %></p>
+    <% end %>
+  </div>
