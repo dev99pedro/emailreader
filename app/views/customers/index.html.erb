@@ -1,7 +1,86 @@
-<% @customers.each do  | c |  %>
-    <p>Nome: <strong><%= c.name  %></strong></p>
-    <p>Email: <strong><%= c.email  %></strong></p>
-    <p>Telefone: <strong><%= c.tel  %></strong></p>
-    <p>Code: <strong><%= c.code  %></strong></p>
-    <p>Assunto: <strong><%= c.subject  %></strong></p>
+<h1 style="font-size: 32px; font-weight: bold; color: #0f172a; margin-bottom: 32px;">👥 Clientes</h1>
+
+<% if @customers.any? %>
+  <!-- Statistics Cards -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 32px;">
+    <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
+      <p style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 8px;">Total de Clientes</p>
+      <p style="font-size: 32px; font-weight: bold; color: #2563eb;"><%= @customers.length %></p>
+    </div>
+    <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
+      <p style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 8px;">Com Email</p>
+      <p style="font-size: 32px; font-weight: bold; color: #16a34a;"><%= @customers.select { |c| c.email.present? }.count %></p>
+    </div>
+    <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
+      <p style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 8px;">Com Telefone</p>
+      <p style="font-size: 32px; font-weight: bold; color: #9333ea;"><%= @customers.select { |c| c.tel.present? }.count %></p>
+    </div>
+    <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
+      <p style="font-size: 14px; color: #64748b; font-weight: 600; margin-bottom: 8px;">Tópicos Únicos</p>
+      <p style="font-size: 32px; font-weight: bold; color: #4f46e5;"><%= @customers.map(&:subject).uniq.count %></p>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); overflow: hidden;">
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background: linear-gradient(to right, #f0f9ff, #e0e7ff); border-bottom: 1px solid #e2e8f0;">
+            <th style="padding: 16px; text-align: left; font-size: 13px; font-weight: 600; color: #0f172a;">Nome</th>
+            <th style="padding: 16px; text-align: left; font-size: 13px; font-weight: 600; color: #0f172a;">Email</th>
+            <th style="padding: 16px; text-align: left; font-size: 13px; font-weight: 600; color: #0f172a;">Telefone</th>
+            <th style="padding: 16px; text-align: left; font-size: 13px; font-weight: 600; color: #0f172a;">Código</th>
+            <th style="padding: 16px; text-align: left; font-size: 13px; font-weight: 600; color: #0f172a;">Tópico</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @customers.each do |customer| %>
+            <tr style="border-bottom: 1px solid #e2e8f0; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8fafc'" onmouseout="this.style.backgroundColor='transparent'">
+              <td style="padding: 16px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #4f46e5); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; flex-shrink: 0;">
+                    <%= customer.name.split.map { |n| n[0].upcase }.join[0...2] %>
+                  </div>
+                  <span style="font-weight: 500; color: #0f172a;"><%= customer.name %></span>
+                </div>
+              </td>
+              <td style="padding: 16px; color: #475569;">
+                <% if customer.email.present? %>
+                  <a href="mailto:<%= customer.email %>" style="color: #2563eb; text-decoration: none; word-break: break-all; transition: color 0.2s;" onmouseover="this.style.color='#1d4ed8'" onmouseout="this.style.color='#2563eb'">
+                    <%= customer.email %>
+                  </a>
+                <% else %>
+                  <span style="color: #cbd5e1;">—</span>
+                <% end %>
+              </td>
+              <td style="padding: 16px; color: #475569;">
+                <%= customer.tel.present? ? customer.tel : '—' %>
+              </td>
+              <td style="padding: 16px;">
+                <span style="display: inline-block; padding: 4px 12px; background: #f1f5f9; color: #475569; font-size: 12px; font-weight: 600; border-radius: 9999px;">
+                  <%= customer.code %>
+                </span>
+              </td>
+              <td style="padding: 16px; color: #475569; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <%= customer.subject %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <!-- Empty State -->
+  <div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 48px; text-align: center;">
+    <svg style="width: 64px; height: 64px; margin: 0 auto 16px; color: #cbd5e1;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 8.646 4 4 0 010-8.646M9 13H3v4a6 6 0 0012 0v-4h-6z"></path>
+    </svg>
+    <h2 style="font-size: 24px; font-weight: bold; color: #0f172a; margin-bottom: 8px;">Nenhum cliente encontrado</h2>
+    <p style="color: #64748b; margin-bottom: 24px;">
+      Envie um arquivo de email na página de <%= link_to "Upload", root_path, style: "color: #2563eb; text-decoration: none;" %> para começar.
+    </p>
+    <%= link_to "📧 Ir para Upload", root_path, style: "display: inline-block; background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%); color: white; font-weight: bold; padding: 10px 20px; border-radius: 8px; text-decoration: none; transition: all 0.3s;" %>
+  </div>
 <% end %>

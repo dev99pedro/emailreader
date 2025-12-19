@@ -15,4 +15,5 @@ Rails.application.routes.draw do
   resources :customers, only: [:index]
   resources :process_logs, only: [:index]
   post "/upload_emails", to: "homes#upload"
+  post "/reprocess_emails", to: "homes#reprocess", as: :reprocess_emails
 end

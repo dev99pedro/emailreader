@@ -1,7 +1,46 @@
-<%= turbo_stream_from "updatelogs" %>
+<div style="max-width: 1200px; margin: 0 auto;">
+  <%= turbo_stream_from "updatelogs" %>
 
-<div data-controller="process-log"  >
-    <% @logs.each do | log | %>
-        <%= render 'shared/logs', log: log %>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <h2 style="font-size: 32px; font-weight: bold; color: #0f172a;">Logs de Processamento</h2>
+      <p style="color: #64748b; margin-top: 4px;">Acompanhe o status de cada arquivo enviado em tempo real</p>
+    </div>
+    <button onclick="location.reload()" style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #f1f5f9; border: none; color: #475569; border-radius: 8px; font-weight: 500; cursor: pointer; transition: background 0.3s; font-size: 14px;">
+      <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+      </svg>
+      Atualizar
+    </button>
+  </div>
+
+  <div data-controller="process-log">
+    <% if @logs.any? %>
+
+      <div id="logs_stats">
+        <%= render 'process_logs/stats', logs: @logs %>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;" id="logs-container">
+        <% @logs.reverse.each do |log| %>
+          <%= render 'shared/logs', log: log %>
+        <% end %>
+      </div>
+    <% else %>
+     
+      <div style="background: white; border-radius: 16px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07); border: 1px solid #e2e8f0; padding: 48px; text-align: center;">
+        <div style="width: 64px; height: 64px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+          <svg style="width: 32px; height: 32px; color: #94a3b8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h3 style="font-size: 20px; font-weight: bold; color: #0f172a; margin-bottom: 8px;">Nenhum log encontrado</h3>
+        <p style="color: #64748b; margin-bottom: 24px; max-width: 400px; margin-left: auto; margin-right: auto;">
+          Após enviar um arquivo para processamento, você verá os logs de status aqui. Volte para a página de upload para começar.
+        </p>
+        <a href="<%= root_path %>" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%); color: white; font-weight: bold; border-radius: 8px; text-decoration: none; transition: all 0.3s; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);">Ir para Upload</a>
+      </div>
     <% end %>
+  </div>
 </div>

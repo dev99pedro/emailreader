@@ -1,5 +1,5 @@
 class ProcessLogsController < ApplicationController
-     include ActionView::RecordIdentifier
+    include ActionView::RecordIdentifier
 
   def index
     @logs = ProcessLog.all

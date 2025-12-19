@@ -1,0 +1,22 @@
+# Dockerfile.dev
+FROM ruby:3.3
+
+# Dependências do sistema
+RUN apt-get update -qq && apt-get install -y \
+  nodejs \
+  postgresql-client \
+  build-essential
+
+# Diretório padrão (igual ao compose)
+WORKDIR /rails
+
+# Gems primeiro (cache eficiente)
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+# Código NÃO é copiado em dev
+# Ele vem do volume
+
+EXPOSE 3000
+
+CMD ["bin/rails", "server", "-b", "0.0.0.0"]

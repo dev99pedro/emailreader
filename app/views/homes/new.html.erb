@@ -1,4 +1,173 @@
-<%= form_with url: upload_emails_path,  local: true, multipart: true do | f | %> 
-  <%= f.file_field :file %>
-  <%= f.submit "Enviar" %>  
-<% end %> 
+<div style="max-width: 1200px; margin: 0 auto;">
+ 
+  <div style="text-align: center; margin-bottom: 48px;padding-top: 30px">
+    <div style="display: inline-block; margin-bottom: 24px;">
+      <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto; margin-bottom: 16px;">
+        <svg style="width: 24px; height: 24px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+        </svg>
+      </div>
+    </div>
+    <h2 style="font-size: 36px; font-weight: bold; color: #0f172a; margin-bottom: 16px;">Upload de Emails</h2>
+    <p style="font-size: 18px; color: #64748b; max-width: 600px; margin: 0 auto;">Envie um arquivo de email para processamento automático. Seus dados serão extraídos e organizados em uma tabela.</p>
+  </div>
+
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-bottom: 48px;">
+   
+    <div style="background: white; border-radius: 16px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07); padding: 32px; border: 1px solid #e2e8f0;">
+      <h3 style="font-size: 20px; font-weight: bold; color: #0f172a; margin-bottom: 8px;">Selecione seu arquivo</h3>
+      <p style="color: #64748b; margin-bottom: 24px;">Formatos: EML, MSG</p>
+      
+      <%= form_with url: upload_emails_path, local: true, multipart: true do |f| %>
+        <div style="border: 2px dashed #93c5fd; border-radius: 12px; padding: 32px; background: rgba(191, 219, 254, 0.3); text-align: center; cursor: pointer; transition: all 0.3s; margin-bottom: 16px;" onmouseover="this.style.backgroundColor='rgba(147, 197, 253, 0.5)'" onmouseout="this.style.backgroundColor='rgba(191, 219, 254, 0.3)'">
+          <input type="file" name="file" id="file_input" style="display: none;" accept=".eml,.msg" onchange="updateFileName(this)">
+          <label for="file_input" style="cursor: pointer;">
+            <svg style="width: 32px; height: 32px; color: #2563eb; margin: 0 auto 12px; display: block;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span style="font-size: 16px; font-weight: 600; color: #2563eb; display: block;">Clique ou arraste</span>
+            <span style="font-size: 12px; color: #64748b; margin-top: 8px; display: block;">Máx: 50MB</span>
+          </label>
+        </div>
+        
+        <div id="file_name" style="margin-top: 12px; font-size: 14px; color: #64748b; display: none; align-items: center; gap: 8px;">
+          <svg style="width: 16px; height: 16px; color: #16a34a;" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+          </svg>
+          <span id="file_name_text"></span>
+        </div>
+
+        <button type="submit" style="width: 100%; background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%); color: white; font-weight: bold; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; margin-top: 16px; transition: all 0.3s; font-size: 16px; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);" onmouseover="this.style.boxShadow='0 8px 12px rgba(37, 99, 235, 0.5)'; this.style.transform='scale(1.02)'" onmouseout="this.style.boxShadow='0 4px 6px rgba(37, 99, 235, 0.3)'; this.style.transform='scale(1)'">Enviar para Processamento</button>
+      <% end %>
+
+      <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e2e8f0;">
+        <h4 style="font-weight: 600; color: #0f172a; margin-bottom: 12px;">Próximos passos:</h4>
+        <ul style="list-style: none; padding: 0;">
+          <li style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 14px; color: #64748b;">
+            <span style="width: 24px; height: 24px; background: #2563eb; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">1</span>
+            Envie seu arquivo de email
+          </li>
+          <li style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 14px; color: #64748b;">
+            <span style="width: 24px; height: 24px; background: #2563eb; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">2</span>
+            Verifique o status em <strong>Logs</strong>
+          </li>
+          <li style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #64748b;">
+            <span style="width: 24px; height: 24px; background: #2563eb; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">3</span>
+            Visualize os dados em <strong>Customers</strong>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); border-radius: 16px; padding: 32px; border: 1px solid #93c5fd;">
+        <div style="display: flex; gap: 16px;">
+          <div style="width: 40px; height: 40px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg style="width: 20px; height: 20px; color: white;" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-11-1h2v2H7V4zm2 4H7v2h2V8zm2-4h2v2h-2V4zm2 4h-2v2h2V8z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div>
+            <h4 style="font-weight: bold; color: #0f172a; margin-bottom: 4px;">Processamento Automático</h4>
+            <p style="color: #334155;">Seus emails são processados automaticamente com tecnologia moderna.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 100%); border-radius: 16px; padding: 32px; border: 1px solid #e9d5ff;">
+        <div style="display: flex; gap: 16px;">
+          <div style="width: 40px; height: 40px; background: #9333ea; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg style="width: 20px; height: 20px; color: white;" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div>
+            <h4 style="font-weight: bold; color: #0f172a; margin-bottom: 4px;">Dados Organizados</h4>
+            <p style="color: #334155;">Todos os seus dados são organizados e facilmente acessíveis.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%); border-radius: 16px; padding: 32px; border: 1px solid #86efac;">
+        <div style="display: flex; gap: 16px;">
+          <div style="width: 40px; height: 40px; background: #16a34a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg style="width: 20px; height: 20px; color: white;" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM9.172 9.172a2 2 0 112.828 2.828L9.939 15.757l-2.828-2.828 2.061-2.061zm6.364-1.414a2 2 0 012.828 0 2 2 0 010 2.828l-.707.707-2.828-2.828.707-.707zM9 11.586l2.828 2.828-7.071 7.071a2 2 0 11-2.828-2.828l7.071-7.071z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div>
+            <h4 style="font-weight: bold; color: #0f172a; margin-bottom: 4px;">Rastreamento de Logs</h4>
+            <p style="color: #334155;">Acompanhe cada etapa do processamento em tempo real.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('file_input');
+    if (!fileInput) return;
+    
+    const dropZone = fileInput.parentElement;
+    if (!dropZone) return;
+
+    function updateFileName(input) {
+      const fileNameDiv = document.getElementById('file_name');
+      const fileNameText = document.getElementById('file_name_text');
+      
+      if (!fileNameDiv || !fileNameText) return;
+      
+      if (input.files && input.files[0]) {
+        fileNameText.textContent = input.files[0].name;
+        fileNameDiv.style.display = 'flex';
+      } else {
+        fileNameDiv.style.display = 'none';
+      }
+    }
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => {
+        dropZone.style.backgroundColor = 'rgba(147, 197, 253, 0.5)';
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => {
+        dropZone.style.backgroundColor = 'rgba(191, 219, 254, 0.3)';
+      }, false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) {
+        fileInput.files = files;
+        updateFileName(fileInput);
+      }
+    }, false);
+
+    fileInput.addEventListener('change', function() {
+      updateFileName(this);
+    });
+  });
+</script>
+
+<style>
+  @media (max-width: 768px) {
+    div[style*="grid-template-columns: 1fr 1fr"] {
+      display: block !important;
+    }
+  }
+</style>

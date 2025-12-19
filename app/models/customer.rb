@@ -1,7 +1,7 @@
 class Customer < ApplicationRecord
 
-  validates :tel, presence: true, unless: -> {tel.present?}
-  validates :email, presence: true, unless: -> {email.present?}
+  validates :tel, presence: true, unless: -> {email.present?}
+  validates :email, presence: true, unless: -> {tel.present?}
   before_save :normalize_fields
 
   def normalize_fields

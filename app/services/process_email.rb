@@ -6,6 +6,7 @@ class ProcessEmail
     "loja@fornecedorA.com" => FornecedorAParser,
     "contato@parceiroB.com" => FornecedorBParser
   }
+  # FALTA TESTAR DO INTIALIZE PRA BAIXO
 
   def initialize(email)
     @email = email 
@@ -15,21 +16,19 @@ class ProcessEmail
 
 
   def process
-
     email  = Mail.read(@email)
     validate_parser
 
     parser = select_parser(email)
 
     unless parser 
-      return "Email #{email.from.first} não é um remetente"
+      raise "Email #{email.from.first} não é um remetente"
     end
     
     select_parser = parser.new(email)
     result = select_parser.dataparsed
- 
     
-
+    return result
   end
 
   private

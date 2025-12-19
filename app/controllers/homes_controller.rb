@@ -11,16 +11,28 @@ class HomesController < ApplicationController
       # pega o nome do arqvuio e adiciona nessa pasta
       filepath = folder.join(file.original_filename)
 
+      # salva o arquivo na pasta
       File.open(filepath, "wb") { |f| f.write(file.read) }
 
       ProcessEmailJob.perform_async(filepath.to_s)
-      redirect_to process_logs_path, notice: "Arquivo enviado para processamento"
-        else
+      redirect_to process_logs_path
+      else
       redirect_to root_path, alert: "Nenhum arquivo selecionado"
     end
   end
 
-  # CRIAR UM BOTAO DE REPROCESSAR INDEX DE VIEWS/PROCESS LOGS, PARA REPROCESSAR OS ARQUIVOS QUE DERAM FAIL
+  def reprocess
+    filename = params[:filename]
+    filepath = Rails.root.join("storage", "emails", "#{filename}")
+
+    if filename.present?
+      ProcessEmailJob.perform_async(filepath.to_s)
+      redirect_to process_logs_path
+    else
+      redirect_to root_path, alert: "Nenhum arquivo selecionado"
+    end   
+  end
+
 
 
   def new

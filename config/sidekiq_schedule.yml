@@ -1,0 +1,5 @@
+cleanup_logs_job:
+  cron: "* * * * *"        # todo dia à meia-noite
+  class: "CleanupLogsJob"  # seu worker
+  queue: default
+  description: "Limpa logs antigos diariamente"

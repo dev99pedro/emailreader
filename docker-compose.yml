@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: email_reader
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      RAILS_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    command: ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+    volumes:
+      - storage-emails:/rails/storage/emails
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      RAILS_ENV: production
+    depends_on:
+      - db
+      - redis
+    command: ["bundle", "exec", "sidekiq"]
+    volumes:
+      - storage-emails:/rails/storage/emails
+
+volumes:
+  db-data:
+  storage-emails:

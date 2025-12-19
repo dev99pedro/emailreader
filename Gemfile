@@ -6,6 +6,8 @@ gem "rails", "~> 8.1.1"
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
+# Tailwind CSS
+gem "tailwindcss-rails", "~> 3.0"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -17,12 +19,21 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+group :development, :test do
+  gem 'rspec-rails'
+end
+group :test do
+  gem 'factory_bot_rails'
+end
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
+gem 'rails-controller-testing'
+
+gem "pg", "~> 1.4"
 gem 'sidekiq'
 gem 'redis', '~> 5.0'
-
+gem 'sidekiq-cron', '~> 1.2'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
