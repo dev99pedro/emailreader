@@ -33,7 +33,7 @@ gem 'rails-controller-testing'
 gem "pg", "~> 1.4"
 gem 'sidekiq'
 gem 'redis', '~> 5.0'
-gem 'sidekiq-cron', '~> 1.2'
+gem 'sidekiq-cron', '~> 2.3'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
